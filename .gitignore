@@ -1,0 +1,15 @@
+/dist/
+/build/
+*.pdb
+*.user
+*.suo
+*.log
+*.bak
+*.tmp
+.env*
+/groups.json*
+/preferences.json
+/status.*
+/error.txt
+/GroupIcons/
+/test-result.txt
