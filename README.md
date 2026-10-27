@@ -6,6 +6,8 @@ Show or hide all desktop icons with a tray button or Ctrl+Alt+H. Toggle again to
 
 Windows 11 x64 and .NET Framework 4.8. Extract the release ZIP and run DesktopIconsToggle.exe as a normal user. Left-click its tray icon to toggle visibility. Right-click for the menu. If Ctrl+Alt+H is already used, the app tries Ctrl+Alt+F12; the actual shortcut appears in the menu.
 
+**Customise the hotkey:** Right-click the tray icon and choose **Change keyboard shortcut...**. Click in the shortcut field and press a combination such as Ctrl+Shift+K or Alt+Shift+F8, then select **Save shortcut**. Use **Reset default** to restore Ctrl+Alt+H, or select **Disable keyboard shortcut** for tray-only controls. Changes apply immediately and are saved under `%LOCALAPPDATA%\\DesktopIconsToggle\\hotkey.txt`. If another app is using your combination, Desktop Icons Toggle will keep your previous shortcut.
+
 Choose **Show desktop icons and exit** to restore icons and stop. Windows may retain the last icon-visibility setting if the app crashes or Windows shuts down; the desktop context menu → View → Show desktop icons always works independently.
 
 Startup is optional: place a shortcut to DesktopIconsToggle.exe in Win+R → shell:startup. Remove the shortcut to stop launching at sign-in. No service or scheduled task is installed.
@@ -14,11 +16,11 @@ Command line: --toggle, --stop. Opening a second instance also toggles icons. --
 
 ## Windhawk alternative
 
-The windhawk/desktop-icons-toggle.wh.cpp file provides a separate Windhawk implementation with the same hotkey and tray toggle. Use either the standalone app or the Windhawk mod, not both. Until accepted into Windhawk's official catalog, it can be installed as a local mod through Windhawk's editor. The public catalog entry is subject to maintainers' review.
+The Windhawk implementation is separately maintained in [the Windhawk pull request](https://github.com/ramensoftware/windhawk-mods/pull/6658). The Windhawk version also supports configurable hotkeys in its Settings tab. Use either the standalone app or the Windhawk mod, not both. Until accepted into Windhawk's official catalog, it can be installed as a local mod through Windhawk's editor. The public catalog entry is subject to maintainers' review.
 
 ## Build and test
 
-Run ./build.ps1 on Windows. Output is in dist/. No build dependencies are downloaded. The standalone --test option briefly toggles icons both ways and restores the original state; run it only on an interactive desktop.
+Run ./build.ps1 on Windows. Output is in dist/. No build dependencies are downloaded. For a ready-made Windows ZIP, see the GitHub Actions build artifacts, or GitHub Releases when a release is published. The CI build runs noninteractive hotkey parser tests. The standalone --test option briefly toggles icons both ways and restores the original state; run it only on an interactive desktop.
 
 ## Privacy and uninstall
 
