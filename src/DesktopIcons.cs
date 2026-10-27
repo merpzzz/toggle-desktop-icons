@@ -234,6 +234,23 @@ sealed class IconContext:ApplicationContext {
 static class AppData {internal static string Folder {get {var p=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"DesktopIconsToggle");Directory.CreateDirectory(p);return p;}}}
 static class Program {
  [STAThread]static int Main(string[] args){try{
+ if(Array.IndexOf(args,"--test-hotkeys")>=0) {
+  uint modifiers,key;
+  string normalized;
+  if(!HotkeyWindow.TryParse("Ctrl+Alt+H",out modifiers,out key,out normalized) ||
+     modifiers!=3 || key!=0x48 || normalized!="Ctrl+Alt+H")return 2;
+  if(!HotkeyWindow.TryParse("Ctrl+Shift+K",out modifiers,out key,out normalized) ||
+     modifiers!=6 || key!=0x4B || normalized!="Ctrl+Shift+K")return 3;
+  if(!HotkeyWindow.TryParse("Alt+Shift+F8",out modifiers,out key,out normalized) ||
+     modifiers!=5 || key!=0x77 || normalized!="Alt+Shift+F8")return 4;
+  if(!HotkeyWindow.TryParse("None",out modifiers,out key,out normalized) ||
+     normalized!="None")return 5;
+  if(HotkeyWindow.TryParse("H",out modifiers,out key,out normalized) ||
+     HotkeyWindow.TryParse("Ctrl+H+G",out modifiers,out key,out normalized) ||
+     HotkeyWindow.TryParse("Ctrl+Ctrl+H",out modifiers,out key,out normalized) ||
+     HotkeyWindow.TryParse("Ctrl+Alt+F13",out modifiers,out key,out normalized))return 6;
+  return 0;
+ }
  if(Array.IndexOf(args,"--test")>=0){bool? before=Desktop.Visible();if(!before.HasValue)throw new Exception("Desktop not found");try{if(!Desktop.Toggle()||!Desktop.WaitFor(!before.Value))throw new Exception("Hide/show transition failed");if(!Desktop.Toggle()||!Desktop.WaitFor(before.Value))throw new Exception("Restore transition failed");File.WriteAllText(Path.Combine(AppData.Folder,"test-result.txt"),"PASS: toggled desktop icons both ways and restored original visibility.");}finally{if(Desktop.Visible()!=before){Desktop.Toggle();Desktop.WaitFor(before.Value);}}return 0;}
  using(var stop=new EventWaitHandle(false,EventResetMode.AutoReset,"Local\\DesktopIconsToggle.Stop"))using(var toggle=new EventWaitHandle(false,EventResetMode.AutoReset,"Local\\DesktopIconsToggle.Toggle")){
  if(Array.IndexOf(args,"--stop")>=0){stop.Set();return 0;}if(Array.IndexOf(args,"--toggle")>=0){toggle.Set();return 0;}
