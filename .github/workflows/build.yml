@@ -15,8 +15,8 @@ jobs:
       - name: Test hotkey parsing
         shell: pwsh
         run: |
-          & ./dist/DesktopIconsToggle.exe --test-hotkeys
-          if ($LASTEXITCODE -ne 0) { throw "Hotkey parser test failed with exit code $LASTEXITCODE" }
+          $test = Start-Process -FilePath "./dist/DesktopIconsToggle.exe" -ArgumentList "--test-hotkeys" -Wait -PassThru
+          if ($test.ExitCode -ne 0) { throw "Hotkey parser test failed with exit code $($test.ExitCode)" }
       - name: Package standalone Windows app
         shell: pwsh
         run: |
