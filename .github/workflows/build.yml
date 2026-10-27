@@ -12,3 +12,18 @@ jobs:
       - name: Build standalone app
         shell: pwsh
         run: ./build.ps1
+      - name: Test hotkey parsing
+        shell: pwsh
+        run: |
+          & ./dist/DesktopIconsToggle.exe --test-hotkeys
+          if ($LASTEXITCODE -ne 0) { throw "Hotkey parser test failed with exit code $LASTEXITCODE" }
+      - name: Package standalone Windows app
+        shell: pwsh
+        run: |
+          Compress-Archive -Path dist/DesktopIconsToggle.exe,dist/README.md,dist/LICENSE,dist/PRIVACY.md,dist/SHA256SUMS.txt -DestinationPath DesktopIconsToggle-Windows-x64.zip
+      - name: Upload downloadable Windows ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: DesktopIconsToggle-Windows-x64
+          path: DesktopIconsToggle-Windows-x64.zip
+          if-no-files-found: error
